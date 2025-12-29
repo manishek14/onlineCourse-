@@ -6,11 +6,11 @@ const v = new Validator()
 
 const schema = {
     name : {
-        type: "string", 
-        min: 3, 
+        type: "string",
+        min: 3,
         max: 50,
     },
-    username : {
+    userName : {
         type : "string",
         min : 5,
         max : 255,
@@ -21,7 +21,7 @@ const schema = {
         max : 100,
     },
     phoneNumber : {
-        type : "number",
+        type : "string",
         min : 11,
         max : 15
     },
@@ -32,8 +32,8 @@ const schema = {
     },
     confirmPassword : {
         type : "equal",
-        field : password
-    }
+        field : "password"
+    },
     $$strict : true,
 }
 

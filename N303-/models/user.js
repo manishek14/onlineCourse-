@@ -16,15 +16,11 @@ const schema = new mongoose.Schema({
         unique : true,
     },
     phoneNumber : {
-        type : Number,
+        type : String,
         required : true,
         unique : true,
     },
     password : {
-        type : String,
-        required : true,
-    },
-    confirmPassword : {
         type : String,
         required : true,
     },
