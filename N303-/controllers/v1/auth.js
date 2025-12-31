@@ -11,10 +11,10 @@ exports.register = async (req , res) => {
         return res.status(422).json(validationResult);
     }
 
-    const {userName , name , email , phoneNumber , password, confirmPassword} = req.body
+    const {username , name , email , phoneNumber , password, confirmPassword} = req.body
 
     const isUserExists = await userModel.findOne({
-        $or : [{userName} , {email}, {phoneNumber}]
+        $or : [{username} , {email}, {phoneNumber}]
     })
 
     if(isUserExists){
@@ -25,7 +25,7 @@ exports.register = async (req , res) => {
     const countOfUsers = await userModel.countDocuments()
 
     const user = await userModel.create({
-        userName,
+        username,
         name,
         email,
         phoneNumber,
@@ -42,7 +42,7 @@ exports.register = async (req , res) => {
 exports.login = async (req , res) => {
     const { identifire , password } = req.body
     const user = await userModel.findOne({
-        $or : [{email : identifire} , {userName : identifire}]
+        $or : [{email : identifire} , {username : identifire}]
     })
 
     if(!user){

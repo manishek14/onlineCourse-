@@ -10,7 +10,7 @@ const schema = {
         min: 3,
         max: 50
     },
-    userName : {
+    username : {
         type : "string",
         min : 5,
         max : 255
