@@ -1,0 +1,18 @@
+AdminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTYxMzc2OWE0MjU2ZTU3OTNkMjlhYiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NzI0ODc1OCwiZXhwIjoxNzY4NDU4MzU4fQ.SfPX4pwTuhQpAc2GpwT-iOFmOTbAiNHLHulYl_R33gs
+UserToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTYxNTQ5OWE0MjU2ZTU3OTNkMjlkNyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzY3MjQ5MjI1LCJleHAiOjE3Njg0NTg4MjV9.Na4toW6mCa36ZKqCY9xQ0xzieENltnHaYPGk_lfyD00
+adminData = {
+    "username": "manishek14",
+    "name": "manishekofteh",
+    "email": "manishekofteh@gmail.com",
+    "phoneNumber": "09154944256",
+    "password": "123456",
+    "confirmPassword": "123456"
+}
+userData = {
+    "username": "{{$randomUserName}}",
+    "name": "{{$randomFullName}}",
+    "email": "{{$randomEmail}}",
+    "phoneNumber": "{{$randomPhoneNumber}}",
+    "password": "123456",
+    "confirmPassword": "123456"
+}

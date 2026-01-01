@@ -14,3 +14,12 @@ exports.ban = async (req , res) => {
 
     return res.status(500).json({message : "Internal Server Error"})
 }
+
+exports.getAll = async (req , res) => {
+    const users = await userModel.find({}).lean()
+    const userOBJ = users.map(user => {
+        const { password, ...userWithoutPassword } = user
+        return userWithoutPassword
+    })
+    res.json(userOBJ)
+}
