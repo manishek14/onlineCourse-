@@ -1,7 +1,7 @@
 module.exports = async (req , res , next) => {
     const isAdmin = req.user.role === "ADMIN"
 
-    if(!isAdmin) {
+    if(isAdmin) {
         return next()
     }
 
