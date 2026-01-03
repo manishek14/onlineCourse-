@@ -1,0 +1,24 @@
+const mongoose = require("mongoose")
+
+const schema = new mongoose.Schema({
+    title : {
+        type : String,
+        required : true
+    },
+    time : {
+        type : String,
+        required : true
+    },
+    free : {
+        type : Number,
+        required : true
+    },
+    course :{
+        type : String,
+        required : true
+    }
+}, {timestamps : true})
+
+const model = mongoose.model("Session" , schema)
+
+module.exports = model
