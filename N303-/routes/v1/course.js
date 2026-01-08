@@ -21,6 +21,16 @@ router
   .route("/:href/:sessionID")
   .get(authMiddle.authenticate , isAdminMiddle , controller.getAllSessionInfo)
 
-router.route("/session/:id").delete(authMiddle.authenticate , isAdminMiddle , controller.rmSession)
+router
+  .route("/session/:id")
+  .delete(authMiddle.authenticate , isAdminMiddle , controller.rmSession)
+
+router
+  .route("/:id/register")
+  .post(authMiddle.authenticate , controller.register)
+
+router
+  .route("/:href")
+  .get(controller.getDetails)
 
 module.exports = router;
