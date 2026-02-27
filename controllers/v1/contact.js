@@ -21,37 +21,39 @@ exports.create = async (req, res) => {
 
   return res
     .status(201)
-    .json({ message: "user created successfully.", contact });
+    .json({ message: "Contact message created successfully.", contact });
 };
 
 exports.answer = async (req, res) => {
   const { email, answer } = req.body;
 
+  // Configure with environment variables
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "example@gamil.com",
-      pass: "tset pass",
+      user: process.env.EMAIL_USER || "example@gmail.com",
+      pass: process.env.EMAIL_PASS || "test pass",
     },
   });
 
   const mailOptions = {
-    from: "example@gamil.com",
+    from: process.env.EMAIL_USER || "example@gmail.com",
     to: email,
-    subject: "your answer from our company",
+    subject: "Your answer from our company",
     text: answer,
   };
 
   transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
-      return res.json({ message: error });
+      console.error("Email error:", error);
+      return res.status(500).json({ message: "Failed to send email", error: error.message });
     } else {
-      const contact = await contactModel.findOneAndUpdate(
+      await contactModel.findOneAndUpdate(
         { email },
-        { answer: 1 }
+        { isAnswer: 1 }
       );
+      return res.json({ message: "Email sent successfully." });
     }
-    return res.json({ message: "email sent successfully." });
   });
 };
 
@@ -60,10 +62,10 @@ exports.remove = async (req, res) => {
 
   const isValidID = mongoose.Types.ObjectId.isValid(id);
   if (!isValidID) {
-    return res.status(409).json({ message: "ID isnt valid!" });
+    return res.status(409).json({ message: "ID isn't valid!" });
   }
 
-  const remove = await contactModel.findOneAndRemove({ _id: id });
+  const remove = await contactModel.findByIdAndDelete(id);
 
-  return res.json({ message: "message removed successfully." });
+  return res.json({ message: "Message removed successfully." });
 };

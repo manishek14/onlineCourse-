@@ -7,7 +7,7 @@ const path = require("path");
 const { generateAccessToken, generateRefreshToken } = require("../../utils/auth");
 const { Smsir } = require("smsir-js");
 const axios = require("axios");
-require("dotenv").config(path.join("../.env"));
+require("dotenv").config({ path: path.join(__dirname, "../../.env") });
 
 exports.register = async (req, res) => {
   try {

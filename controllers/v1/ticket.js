@@ -1,9 +1,10 @@
 const ticketModel = require("../../models/ticket");
 const departmentModel = require("../../models/department");
 const departmentSubModel = require("../../models/departmentSub");
+const mongoose = require("mongoose");
 
 exports.getAll = async (req, res) => {
-  const tickets = ticketModel
+  const tickets = await ticketModel
     .find({ answer: 0 })
     .populate("departmentID", "title")
     .populate("departmentSubID", "title")
@@ -16,18 +17,14 @@ exports.getAll = async (req, res) => {
 exports.create = async (req, res) => {
   const { departmentID, departmentSubID, title, body, priority } = req.body;
 
-  const isValidDepartmentID = await departmentModel.find({
-    _id: departmentID,
-  });
+  const isValidDepartmentID = await departmentModel.findById(departmentID);
 
-  const isValidDepartmentSubID = await departmentSubModel.find({
-    _id: departmentSubID,
-  });
+  const isValidDepartmentSubID = await departmentSubModel.findById(departmentSubID);
 
   if (!isValidDepartmentID) {
-    return res.status(409).json({ message: "departmentID isnt valid!" });
+    return res.status(409).json({ message: "departmentID isn't valid!" });
   } else if (!isValidDepartmentSubID) {
-    return res.status(409).json({ message: "departmentSubID isnt valid!" });
+    return res.status(409).json({ message: "departmentSubID isn't valid!" });
   }
 
   const Ticket = await ticketModel.create({
@@ -36,23 +33,23 @@ exports.create = async (req, res) => {
     departmentID,
     departmentSubID,
     answer: 0,
-    creator: req.user._id,
+    creator: req.user.id,
     priority,
     isAnswer: 0,
   });
 
   const mainTicket = await ticketModel
-    .findOne({ _id: Ticket._id })
+    .findById(Ticket._id)
     .populate("departmentID")
     .populate("departmentSubID")
     .populate("creator")
     .lean();
-  return res.status(201).json({ message: "ticket sent successfully." });
+  return res.status(201).json({ message: "Ticket sent successfully." });
 };
 
 exports.userTickets = async (req, res) => {
-  const tickets = ticketModel
-    .find({ creator: req.user._id })
+  const tickets = await ticketModel
+    .find({ creator: req.user.id })
     .sort({ _id: -1 })
     .populate("departmentID", "title")
     .populate("departmentSubID", "title")
@@ -67,11 +64,11 @@ exports.remove = async (req, res) => {
 
   const isValidID = mongoose.Types.ObjectId.isValid(id);
   if (!isValidID) {
-    return res.status(409).json({ message: "ID isnt valid!" });
+    return res.status(409).json({ message: "ID isn't valid!" });
   }
 
-  const remove = await ticketModel.findOneAndDelete({ _id: id });
-  return res.json({ message: "ticket has removed successfully." });
+  const remove = await ticketModel.findByIdAndDelete(id);
+  return res.json({ message: "Ticket has been removed successfully." });
 };
 
 exports.department = async (req, res) => {
@@ -85,7 +82,7 @@ exports.departmentSub = async (req, res) => {
 
   const isValidID = mongoose.Types.ObjectId.isValid(id);
   if (!isValidID) {
-    return res.status(409).json({ message: "ID isnt valid!" });
+    return res.status(409).json({ message: "ID isn't valid!" });
   }
 
   const departmentSubs = await departmentSubModel.find({ parent: id }).lean();
@@ -95,24 +92,24 @@ exports.departmentSub = async (req, res) => {
 exports.setAnswer = async (req, res) => {
   const { body, ticketID } = req.body;
 
-  const ticket = await ticketModel.find({ _id: ticketID });
+  const ticket = await ticketModel.findById(ticketID);
   if (!ticket) {
-    return res.status(409).json({ message: "ticketID isnt valid!" });
+    return res.status(409).json({ message: "ticketID isn't valid!" });
   }
 
   const answer = await ticketModel.create({
-    title: "your ticket answer.",
+    title: "Your ticket answer.",
     body,
     parent: ticketID,
     priority: ticket.priority,
-    creator: req.user._id,
+    creator: req.user.id,
     isAnswer: 1,
     answer: 0,
     departmentID: ticket.departmentID,
     departmentSubID: ticket.departmentSubID,
   });
 
-  await ticketModel.findOneAndUpdate({ _id: ticketID }, { answer: 1 });
+  await ticketModel.findByIdAndUpdate(ticketID, { answer: 1 });
 
   return res.status(201).json(answer);
 };
@@ -122,11 +119,11 @@ exports.getAnswer = async (req, res) => {
   
   const isValidID = mongoose.Types.ObjectId.isValid(id);
   if (!isValidID) {
-    return res.status(409).json({ message: "ID isnt valid!" });
+    return res.status(409).json({ message: "ID isn't valid!" });
   }
 
-  const ticket = await ticketModel.findOne({ _id: id });
+  const ticket = await ticketModel.findById(id);
   const ticketAnswer = await ticketModel.findOne({ parent: id });
 
-  return res.json(ticket, ticketAnswer ? ticketAnswer : null);
+  return res.json({ ticket, ticketAnswer: ticketAnswer || null });
 };

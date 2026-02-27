@@ -10,9 +10,30 @@ export const useAuth = () => {
 }
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: '/v1',
   withCredentials: true,
 })
+
+// Add response interceptor for token refresh
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+
+      try {
+        await api.post('/auth/refreshToken')
+        return api(originalRequest)
+      } catch (refreshError) {
+        return Promise.reject(refreshError)
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 exports.getAll = async (req, res) => {
   const discounts = await discountModel
     .find({}, "-__v")
-    .populate("creator", "name href")
+    .populate("creator", "name")
     .populate("course", "name")
     .lean();
 
@@ -21,20 +21,20 @@ exports.create = async (req, res) => {
     course,
     max,
     uses: 0,
-    creator: req.user._id,
+    creator: req.user.id,
   });
 
   return res
     .status(201)
-    .json({ message: "discount code created successfully." });
+    .json({ message: "Discount code created successfully." });
 };
 
 exports.setOnAll = async (req, res) => {
   const { discount } = req.body;
 
-  const courseDiscounts = await courseModel.updateMany({ discount });
+  const courseDiscounts = await courseModel.updateMany({}, { discount });
 
-  return res.json({ discount });
+  return res.json({ message: "Discount applied to all courses", discount });
 };
 
 exports.getOne = async (req, res) => {
@@ -54,13 +54,8 @@ exports.getOne = async (req, res) => {
     return res.status(409).json({ message: "This code already used!" });
   } else {
     await discountModel.findOneAndUpdate(
-      {
-        code,
-        course,
-      },
-      {
-        uses: discount.uses + 1,
-      }
+      { code, course },
+      { uses: discount.uses + 1 }
     );
     return res.json(discount);
   }
@@ -71,10 +66,10 @@ exports.remove = async (req, res) => {
 
   const isValidID = mongoose.Types.ObjectId.isValid(id);
   if (!isValidID) {
-    return res.status(409).json({ message: "ID isnt valid!" });
+    return res.status(409).json({ message: "ID isn't valid!" });
   }
 
-  const remove = await discountModel.findOneAndRemove({ _id: id });
+  const remove = await discountModel.findByIdAndDelete(id);
 
-  return res.json({ message: "discount code removed successfully." });
+  return res.json({ message: "Discount code removed successfully." });
 };
