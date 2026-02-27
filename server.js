@@ -9,8 +9,19 @@ const startServer = async () => {
   const port = process.env.PORT || 3000;
 
   app.get("/", (req, res) => {
-    const token = req.header("Authorization").split(" ")[1];
-    res.json({ message: `token => ${token}` });
+    res.json({ 
+      message: "Online Course Platform API",
+      version: "1.0.0",
+      documentation: "/api-docs"
+    });
+  });
+
+  app.get("/health", (req, res) => {
+    res.status(200).json({ 
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime()
+    });
   });
 
   app.listen(port, () => {

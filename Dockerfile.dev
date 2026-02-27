@@ -1,0 +1,23 @@
+# Development Dockerfile with hot reload
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install nodemon globally for hot reload
+RUN npm install -g nodemon
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev)
+RUN npm install
+
+# Copy application files
+COPY . .
+
+# Create upload directories
+RUN mkdir -p public/course/covers public/course/videos public/article/covers public/article/videos
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
