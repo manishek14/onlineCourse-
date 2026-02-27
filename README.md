@@ -25,6 +25,36 @@
 
 ## 🚀 نصب و راه‌اندازی
 
+### روش 1: استفاده از Docker (توصیه می‌شود) 🐳
+
+```bash
+# کلون کردن پروژه
+git clone https://github.com/manishek14/onlineCourse-.git
+cd N303-
+
+# کپی کردن فایل محیطی
+cp .env.example .env
+
+# ویرایش .env و تنظیم مقادیر
+nano .env
+
+# اجرای با Docker Compose
+docker-compose up -d
+
+# مشاهده لاگ‌ها
+docker-compose logs -f
+```
+
+**دسترسی به برنامه:**
+- Frontend: http://localhost
+- Backend API: http://localhost:3000
+- API Docs: http://localhost:3000/api-docs
+- Mongo Express: http://localhost:8081 (dev mode)
+
+برای اطلاعات بیشتر: [راهنمای Docker](./DOCKER_GUIDE.md)
+
+### روش 2: نصب دستی
+
 ### پیش‌نیازها
 - Node.js (v16 یا بالاتر)
 - MongoDB
