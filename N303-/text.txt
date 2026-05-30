@@ -1,18 +1,1 @@
-{
-    "username": "Manishek14",
-    "name": "manishekofteh",
-    "email": "manishekofteh@gmail.com",
-    "phoneNumber": "09154944256",
-    "password": "mani.sh12",
-    "confirmPassword": "mani.sh12"
-}
-Admin : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTUzYTNmMjAyYmJjMDA0YmFlZDA1YiIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NzE5MzE1MiwiZXhwIjoxNzY4NDAyNzUyfQ.jLzxLynZkctULCh2pkB3TsHN8cVZa1ug1YOC_Q5sZSw
-user : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NTUzYTkwMjAyYmJjMDA0YmFlZDA2MyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzY3MTkzMjMyLCJleHAiOjE3Njg0MDI4MzJ9.QcR4NQLukDy_YumbJ2Ph-ySEeM_EcO0crqlOaN9qNxo
-{
-    "username": "{{$randomUserName}}",
-    "name": "{{$randomFullName}}",
-    "email": "{{$randomEmail}}",
-    "phoneNumber": "{{$randomPhoneNumber}}",
-    "password": "mani1234",
-    "confirmPassword": "mani1234"
-}
+
